@@ -1,27 +1,9 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { DateTime } from 'ts-luxon'
 import {getMonthTimeState} from 'features/grid/courtAPI'
+import {PlaceState, DateState} from 'models'
+import {DateTime} from 'ts-luxon'
 
 export function Grid() {
-
-  type DateState = {
-    [key: string]: any
-  };
-
-  type PlaceState = {
-    "comcd": String,
-    "part_cd": String,
-    "place_cd": String,
-    "date": string,     //string
-    "weekday": String,
-    "time_nm": String,
-    "start_time": String,
-    "end_time": String,
-    "rent_no": String,
-    "time_no": String,
-    "use_yn": String
-  };
-
   const [dataPlace, setDataPlace] = useState<PlaceState[]>([]);
   const [dataDate, setDataDate] = useState<DateState>();
   const [dataColumn, setDataColumn] = useState<DateState>();
@@ -37,14 +19,14 @@ export function Grid() {
    */
   useEffect(()=>{
     const getPlaceState = async () => {
-      let placeState: PlaceState[] = [];
+      const placeState: PlaceState[] = await getMonthTimeState();
       let dateState: DateState = {};
-      const today = DateTime.now().toFormat('yyyyMMdd');
-
-      placeState = await getMonthTimeState();
 
       placeState.forEach((e: PlaceState) => {
-        dateState[e.date] ? dateState[e.date].push(e) : dateState[e.date] = [e];
+        const weekday = DateTime.fromISO(e.date, {locale:"kr"}).toFormat("EEE");
+        const dateweek = `${e.date} (${weekday})`;
+        dateState[dateweek] ? dateState[dateweek].push(e) : dateState[dateweek] = [e];
+
       });
 
       // console.log("placeState", placeState);

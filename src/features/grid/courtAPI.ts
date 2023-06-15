@@ -1,6 +1,6 @@
 import {URL_MONTH_TIME} from 'const'
-import { DateTime } from 'ts-luxon'
-import {DateState, PlaceState} from 'models'
+import {DateTime} from 'ts-luxon'
+import {PlaceState} from 'models'
 
 export async function getMonthTimeState() {
   return new Promise<PlaceState[]>(async (resolve) =>{
