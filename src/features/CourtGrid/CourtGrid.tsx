@@ -44,8 +44,6 @@ export function CourtGrid() {
   }, []);
 
   function copy(row: any){
-    //TODO - not working on Mobile
-    
     console.log(row);
     const place_cd = row[3].data;
     const time_no = encodeURIComponent(`${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`);
@@ -79,7 +77,29 @@ export function CourtGrid() {
       form.submit();    
     `;
 
-    navigator.clipboard.writeText(scriptString);
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(scriptString);
+    } else {
+        // Use the 'out of viewport hidden text area' trick
+        const textArea = document.createElement("textarea");
+        textArea.value = scriptString;
+            
+        // Move textarea out of the viewport so it's not visible
+        textArea.style.position = "absolute";
+        textArea.style.left = "-999999px";
+            
+        document.body.prepend(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            textArea.remove();
+        }
+    };
+
     setTimeout(() => {
       window.open("https://www.ycs.or.kr/fmcs/4", '_blank');
     }, 500);
