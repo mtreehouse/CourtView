@@ -2,9 +2,9 @@ import React, { useMemo, useState, useEffect } from 'react';
 import {getMonthTimeState} from 'features/grid/courtAPI'
 import {PlaceState, DateState} from 'models'
 import {DateTime} from 'ts-luxon'
+import { JsonToTable } from "react-json-to-table";
 
 export function Grid() {
-  const [dataPlace, setDataPlace] = useState<PlaceState[]>([]);
   const [dataDate, setDataDate] = useState<DateState>();
   const [dataColumn, setDataColumn] = useState<DateState>();
 
@@ -29,13 +29,24 @@ export function Grid() {
 
       });
 
+      const dateOrderState: any = {};
+        Object.keys(dateState).sort().forEach((key: any)=>{
+          
+          dateState[key].sort((a: any, b: any) => {
+            delete a.comcd;
+            delete a.part_cd;
+            delete b.comcd;
+            delete b.part_cd;
+            return (a.start_time > b.start_time ? 1 : -1)
+          });
+          dateOrderState[key] = dateState[key];
+      });
+
       // console.log("placeState", placeState);
       console.log("dateState", dateState);
 
-      setDataPlace(dateState["20230613"]);
-      setDataDate(dateState);
-      setDataColumn(Object.keys(dateState));
-  
+      setDataDate(dateOrderState);
+
     };
 
     getPlaceState();
@@ -46,7 +57,7 @@ export function Grid() {
   return (
     <div>
       <div>
-
+        <JsonToTable json={dataDate} />
       </div>
     </div>
   );

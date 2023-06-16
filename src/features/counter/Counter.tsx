@@ -54,8 +54,14 @@ export function Counter() {
         dateState[e.date] ? dateState[e.date].push(e) : dateState[e.date] = [e];
       });
 
+      const dateOrderState: any = {};
+      Object.keys(placeState).sort().map((key: any)=>{
+        dateOrderState[key] = placeState[key];
+      })
+      
       console.log("placeState", placeState);
       console.log("dateState", dateState);
+      console.log("dateOrderState", dateOrderState);
 
       setDataPlace(dateState["20230613"]);
       setDataDate(dateState);
