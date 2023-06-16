@@ -26,6 +26,12 @@
   color: rgb(112, 76, 182);
 }
 
+/* grid js css (s) */
+td.gridjs-td {
+  padding: 5px 12px !important;
+}
+/* grid js css (e) */
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
@@ -37,3 +43,5 @@
     transform: translateY(0px);
   }
 }
+
+
