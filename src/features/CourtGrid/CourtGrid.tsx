@@ -43,6 +43,48 @@ export function CourtGrid() {
 
   }, []);
 
+  function copy(row: any){
+    //TODO - not working on Mobile
+    
+    console.log(row);
+    const place_cd = row[3].data;
+    const time_no = encodeURIComponent(`${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`);
+    const rent_type = "1001";
+    const rent_date = row[8].data;
+
+    const scriptString: string = `
+      var url = "/fmcs/4";
+      var arr_elem = {
+          "action": "write",
+          "comcd": "YCS04",
+          "part_cd": "02",
+          "place_cd": "${place_cd}",
+          "time_no": "${time_no}", 
+          "rent_type": "${rent_type}",
+          "rent_date": "${rent_date}"
+      };
+      
+      var form = $('<form id="form_send_post_'+ (new Date()).getTime() +'" method="post" action="" style="position: absolute;width:0;height:0;overflow:hidden;font-size:0;"></form>');
+      form.attr('action', url);
+      $(document.body).append(form);
+      
+      for(key in arr_elem)
+      {
+        var input = $('<input type="hidden" name="" value=""/>');
+        input.attr('name', key);
+        input.val(decodeURIComponent(arr_elem[key]));
+        form.append(input);
+      }
+      
+      form.submit();    
+    `;
+
+    navigator.clipboard.writeText(scriptString);
+    setTimeout(() => {
+      window.open("https://www.ycs.or.kr/fmcs/4", '_blank');
+    }, 500);
+  }
+
   return (
     <div>
       <div>
@@ -64,18 +106,38 @@ export function CourtGrid() {
                 },
                 { 
                   name: '예약',
-                  formatter: (...args1: any) => {
+                  formatter: (cell: any, row: any) => {
                     return h('button', {
                       className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
                       onClick: (...args2: any) => {
-                        console.log("//////////////args1");
-                        console.log(JSON.stringify(args1));
-                        console.log("//////////////args2");
-                        console.log(JSON.stringify(args2))
-                        window.open("http://www.naver.com", '_blank');
+                        copy(row._cells);
                       }
-                    }, '선택');
+                    }, '복사');
                   }
+                },
+                {
+                  id: 'place_cd',
+                  hidden: true
+                },
+                {
+                  id: 'time_no',
+                  hidden: true
+                },
+                {
+                  id: 'time_nm',
+                  hidden: true
+                },
+                {
+                  id: 'start_time',
+                  hidden: true
+                },
+                {
+                  id: 'end_time',
+                  hidden: true
+                },
+                {
+                  id: 'date',
+                  hidden: true
                 },
               ]}
             >
