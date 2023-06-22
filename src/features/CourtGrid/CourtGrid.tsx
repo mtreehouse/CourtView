@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import {getMonthTimeState} from 'features/CourtGrid/courtAPI'
 import {PlaceState, DateState} from 'models'
 import {DateTime} from 'ts-luxon'
@@ -11,17 +12,20 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { showLoading, isLoadingState } from './spinnerSlice';
 
 export function CourtGrid() {
   const [dataDate, setDataDate] = useState<DateState>({});
   const [dateColumn, setDateColumn] = useState<Array<string>>();
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector(isLoadingState);
 
   useEffect(()=>{
     const getPlaceState = async () => {
+      dispatch(showLoading(true));
       const placeState: PlaceState[] = await getMonthTimeState();
       let dateState: DateState = {};
-
-      console.log("third");
 
       placeState.forEach((e: PlaceState) => {
         const weekday = DateTime.fromISO(e.date, {locale:"kr"}).toFormat("EEE");
@@ -39,13 +43,10 @@ export function CourtGrid() {
 
       });
 
-      console.log("fourth");
-      
       setDataDate(dateOrderState);
       setDateColumn(Object.keys(dateOrderState));
+      dispatch(showLoading(false));
       
-      console.log("dateState", dateState);
-
     };
 
     getPlaceState();
@@ -140,7 +141,7 @@ export function CourtGrid() {
                       },
                       {
                         name: '장소',
-                        data: (row: any) => `코트-${row.place_cd}`
+                        data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`
                       },
                       { 
                         name: '예약',

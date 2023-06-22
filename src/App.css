@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: rgb(83, 83, 83);
+  background-color: rgb(255, 255, 255);
 }
 
 .App-logo {
@@ -33,6 +33,7 @@ td.gridjs-td {
 }
 .btnCopy {
   font-size: .9em;
+  text-align: center;
 }
 /* grid js css (e) */
 
