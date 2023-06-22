@@ -6,6 +6,11 @@ import { Grid } from "gridjs-react";
 import { h } from "gridjs";
 import "gridjs/dist/theme/mermaid.css";
 import styles from 'features/CourtGrid/CourtGrid.module.css';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export function CourtGrid() {
   const [dataDate, setDataDate] = useState<DateState>({});
@@ -16,6 +21,8 @@ export function CourtGrid() {
       const placeState: PlaceState[] = await getMonthTimeState();
       let dateState: DateState = {};
 
+      console.log("third");
+
       placeState.forEach((e: PlaceState) => {
         const weekday = DateTime.fromISO(e.date, {locale:"kr"}).toFormat("EEE");
         const dateweek = `${e.date} (${weekday})`;
@@ -25,13 +32,15 @@ export function CourtGrid() {
 
       const dateOrderState: any = {};
         Object.keys(dateState).sort().forEach((key: any)=>{
-          
           dateState[key].sort((a: any, b: any) => (
             a.start_time > b.start_time ? 1 : -1
           ));
           dateOrderState[key] = dateState[key];
+
       });
 
+      console.log("fourth");
+      
       setDataDate(dateOrderState);
       setDateColumn(Object.keys(dateOrderState));
       
@@ -107,62 +116,73 @@ export function CourtGrid() {
 
   return (
     <div>
+
       <div>
       {
         dateColumn?.map((key, index) => (
-          <div className={styles.gridDiv}>
-            <div className={styles.dateTitle}>{key}</div>
-            <Grid
-              data={dataDate[key]}
-              columns={[
-                {
-                  name: '시간',
-                  data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
-                  sort: true
-                },
-                {
-                  name: '장소',
-                  data: (row: any) => `코트-${row.place_cd}`
-                },
-                { 
-                  name: '예약',
-                  formatter: (cell: any, row: any) => {
-                    return h('button', {
-                      className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-                      onClick: (...args2: any) => {
-                        copy(row._cells);
-                      }
-                    }, '복사');
-                  }
-                },
-                {
-                  id: 'place_cd',
-                  hidden: true
-                },
-                {
-                  id: 'time_no',
-                  hidden: true
-                },
-                {
-                  id: 'time_nm',
-                  hidden: true
-                },
-                {
-                  id: 'start_time',
-                  hidden: true
-                },
-                {
-                  id: 'end_time',
-                  hidden: true
-                },
-                {
-                  id: 'date',
-                  hidden: true
-                },
-              ]}
-            >
-            </Grid>
-          </div>
+          <Accordion key={index}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header-"
+              >
+                <Typography>{key}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className={styles.gridDiv}>
+                  <Grid
+                    data={dataDate[key]}
+                    columns={[
+                      {
+                        name: '시간',
+                        data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
+                        sort: true
+                      },
+                      {
+                        name: '장소',
+                        data: (row: any) => `코트-${row.place_cd}`
+                      },
+                      { 
+                        name: '예약',
+                        formatter: (cell: any, row: any) => {
+                          return h('button', {
+                            className: 'btnCopy',
+                            onClick: (...args2: any) => {
+                              copy(row._cells);
+                            }
+                          }, '복사');
+                        }
+                      },
+                      {
+                        id: 'place_cd',
+                        hidden: true
+                      },
+                      {
+                        id: 'time_no',
+                        hidden: true
+                      },
+                      {
+                        id: 'time_nm',
+                        hidden: true
+                      },
+                      {
+                        id: 'start_time',
+                        hidden: true
+                      },
+                      {
+                        id: 'end_time',
+                        hidden: true
+                      },
+                      {
+                        id: 'date',
+                        hidden: true
+                      },
+                    ]}
+                  >
+                  </Grid>
+                </div>
+              </AccordionDetails>
+          </Accordion>
         ))
       }
       </div>

@@ -6,7 +6,7 @@ export async function getMonthTimeState() {
   return new Promise<PlaceState[]>(async (resolve) =>{
     let placeState: PlaceState[] = [];
     const today = DateTime.now().toFormat('yyyyMMdd');
-  
+    console.log("first")
     for (let index = 1; index <= 18; index++) {
       /* 
         company_code : 센터
@@ -22,6 +22,7 @@ export async function getMonthTimeState() {
         placeState.push(...openMonthState);
   
       })
+        console.log("second")
       if(index === 18) resolve(placeState);
     };
   });

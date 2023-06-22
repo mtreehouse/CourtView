@@ -1,7 +1,6 @@
 .gridDiv {
-    font-size: small;
-    margin: 15px;
-    max-width: 500px;
+    font-size: .6em;
+    max-width: 600px;
 }
 
 .dateTitle {
