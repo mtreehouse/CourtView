@@ -1,8 +1,8 @@
 import React from 'react';
-import { CourtGrid } from 'features/CourtGrid/CourtGrid';
+import { CourtGrid } from 'features/courtgrid/CourtGrid';
 import './App.css';
 import { useSelector } from 'react-redux'
-import { isLoadingState } from 'features/CourtGrid/spinnerSlice';
+import { isLoadingState } from 'features/courtgrid/spinnerSlice';
 import { HashLoader } from 'react-spinners'
 function App() {
   const isLoading = useSelector(isLoadingState);

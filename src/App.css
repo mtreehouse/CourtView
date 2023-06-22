@@ -29,7 +29,10 @@
 
 /* grid js css (s) */
 td.gridjs-td {
-  padding: 5px 12px !important;
+  padding: 3.5px 15px !important;
+}
+.gridjs-tr th:nth-child(3), .gridjs-td:nth-child(3) {
+  text-align: center !important;
 }
 .btnCopy {
   font-size: .9em;

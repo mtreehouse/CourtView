@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import {getMonthTimeState} from 'features/CourtGrid/courtAPI'
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux'
+import {getMonthTimeState} from 'features/courtgrid/courtAPI'
 import {PlaceState, DateState} from 'models'
 import {DateTime} from 'ts-luxon'
-import { Grid } from "gridjs-react";
-import { h } from "gridjs";
+import { Grid, _ } from "gridjs-react";
 import "gridjs/dist/theme/mermaid.css";
-import styles from 'features/CourtGrid/CourtGrid.module.css';
+import styles from 'features/courtgrid/CourtGrid.module.css';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { showLoading, isLoadingState } from './spinnerSlice';
+import { showLoading } from './spinnerSlice';
+import Button from '@mui/material/Button';
+import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
 
 export function CourtGrid() {
   const [dataDate, setDataDate] = useState<DateState>({});
   const [dateColumn, setDateColumn] = useState<Array<string>>();
   const dispatch = useDispatch();
-
-  const isLoading = useSelector(isLoadingState);
 
   useEffect(()=>{
     const getPlaceState = async () => {
@@ -51,41 +50,46 @@ export function CourtGrid() {
 
     getPlaceState();
 
-  }, []);
+  }, [dispatch]);
 
   function copy(row: any){
     console.log(row);
     const place_cd = row[3].data;
-    const time_no = encodeURIComponent(`${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`);
-    const rent_type = "1001";
+    const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
     const rent_date = row[8].data;
 
     const scriptString: string = `
-      var url = "/fmcs/4";
-      var arr_elem = {
-          "action": "write",
-          "comcd": "YCS04",
-          "part_cd": "02",
-          "place_cd": "${place_cd}",
-          "time_no": "${time_no}", 
-          "rent_type": "${rent_type}",
-          "rent_date": "${rent_date}"
-      };
-      
-      var form = $('<form id="form_send_post_'+ (new Date()).getTime() +'" method="post" action="" style="position: absolute;width:0;height:0;overflow:hidden;font-size:0;"></form>');
-      form.attr('action', url);
-      $(document.body).append(form);
-      
-      for(key in arr_elem)
-      {
-        var input = $('<input type="hidden" name="" value=""/>');
-        input.attr('name', key);
-        input.val(decodeURIComponent(arr_elem[key]));
-        form.append(input);
-      }
-      
-      form.submit();    
-    `;
+      var data = new URLSearchParams({
+        "action": "write",
+        "comcd": "YCS04",
+        "part_cd": "02",
+        "place_cd": "${place_cd}",
+        "time_no": "${time_no}", 
+        "rent_type": "1001",
+        "rent_date": "${rent_date}"
+      }).toString();
+      $.ajax({
+        type: "POST",
+        url: '/fmcs/4',
+        data: data,
+        success: function(data)
+        {
+          var popup = window.open("", "_blank");
+            popup.document.write(data);
+            setTimeout(()=>{
+              var popDoc = $(popup.document);
+              var name = popDoc.find("#mem_nm").val();
+              popDoc.find("#team_nm").val(name);    
+              popDoc.find("#team_yn2").prop("checked", true);
+              popDoc.find("#users").val(4);    
+              popDoc.find("#purpose").val("건강 증진");    
+              popDoc.find("#agree_use1").prop("checked", true);
+            
+            }, 300);
+            
+        }
+      });
+    `;  
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(scriptString);
@@ -125,7 +129,7 @@ export function CourtGrid() {
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
-                id="panel1a-header-"
+                id="panel1a-header"
               >
                 <Typography>{key}</Typography>
               </AccordionSummary>
@@ -145,14 +149,9 @@ export function CourtGrid() {
                       },
                       { 
                         name: '예약',
-                        formatter: (cell: any, row: any) => {
-                          return h('button', {
-                            className: 'btnCopy',
-                            onClick: (...args2: any) => {
-                              copy(row._cells);
-                            }
-                          }, '복사');
-                        }
+                        formatter: (cell: any, row: any) => _(
+                          <Button color="success" size="small" variant="outlined" onClick={()=>{copy(row._cells)}} startIcon={<SportsTennisOutlinedIcon/>} > </Button>
+                        ),
                       },
                       {
                         id: 'place_cd',
