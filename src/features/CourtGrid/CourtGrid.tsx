@@ -55,41 +55,78 @@ export function CourtGrid() {
   function copy(row: any){
     console.log(row);
     const place_cd = row[3].data;
-    const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
+    const time_no = encodeURIComponent(`${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`);
+    const rent_type = "1001";
     const rent_date = row[8].data;
 
+    /* 
+      function copy(row: any){
+        console.log(row);
+        const place_cd = row[3].data;
+        const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
+        const rent_date = row[8].data;
+
+        const scriptString: string = `
+          var data = new URLSearchParams({
+            "action": "write",
+            "comcd": "YCS04",
+            "part_cd": "02",
+            "place_cd": "${place_cd}",
+            "time_no": "${time_no}", 
+            "rent_type": "1001",
+            "rent_date": "${rent_date}"
+          }).toString();
+          $.ajax({
+            type: "POST",
+            url: '/fmcs/4',
+            data: data,
+            success: function(data)
+            {
+              var popup = window.open("", "_blank");
+                popup.document.write(data);
+                setTimeout(()=>{
+                  var popDoc = $(popup.document);
+                  var name = popDoc.find("#mem_nm").val();
+                  popDoc.find("#team_nm").val(name);    
+                  popDoc.find("#team_yn2").prop("checked", true);
+                  popDoc.find("#users").val(4);    
+                  popDoc.find("#purpose").val("건강 증진");    
+                  popDoc.find("#agree_use1").prop("checked", true);
+                  popDoc.scrollTop(popDoc.height());
+                  popup.popup();
+                }, 300);
+                
+            }
+          });
+        `;      
+    
+    */
     const scriptString: string = `
-      var data = new URLSearchParams({
-        "action": "write",
-        "comcd": "YCS04",
-        "part_cd": "02",
-        "place_cd": "${place_cd}",
-        "time_no": "${time_no}", 
-        "rent_type": "1001",
-        "rent_date": "${rent_date}"
-      }).toString();
-      $.ajax({
-        type: "POST",
-        url: '/fmcs/4',
-        data: data,
-        success: function(data)
-        {
-          var popup = window.open("", "_blank");
-            popup.document.write(data);
-            setTimeout(()=>{
-              var popDoc = $(popup.document);
-              var name = popDoc.find("#mem_nm").val();
-              popDoc.find("#team_nm").val(name);    
-              popDoc.find("#team_yn2").prop("checked", true);
-              popDoc.find("#users").val(4);    
-              popDoc.find("#purpose").val("건강 증진");    
-              popDoc.find("#agree_use1").prop("checked", true);
-            
-            }, 300);
-            
-        }
-      });
-    `;  
+      var url = "/fmcs/4";
+      var arr_elem = {
+          "action": "write",
+          "comcd": "YCS04",
+          "part_cd": "02",
+          "place_cd": "${place_cd}",
+          "time_no": "${time_no}", 
+          "rent_type": "${rent_type}",
+          "rent_date": "${rent_date}"
+      };
+      
+      var form = $('<form id="form_send_post_'+ (new Date()).getTime() +'" method="post" action="" target="_blank" style="position: absolute;width:0;height:0;overflow:hidden;font-size:0;"></form>');
+      form.attr('action', url);
+      $(document.body).append(form);
+      
+      for(key in arr_elem)
+      {
+        var input = $('<input type="hidden" name="" value=""/>');
+        input.attr('name', key);
+        input.val(decodeURIComponent(arr_elem[key]));
+        form.append(input);
+      }
+      
+      form.submit();    
+    `;
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(scriptString);
