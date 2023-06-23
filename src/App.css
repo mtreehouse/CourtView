@@ -1,21 +1,11 @@
 .App {
   text-align: center;
   background-color: rgb(255, 255, 255);
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
+  margin: 50px;
 }
 
 .App-header {
-  min-height: 100vh;
+  min-height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,8 +13,12 @@
   font-size: calc(10px + 2vmin);
 }
 
-.App-link {
-  color: rgb(112, 76, 182);
+/* custom */
+#fabInfo {
+  position: fixed;
+  margin: 20px;
+  left: 0;
+  top: 20px;
 }
 
 /* grid js css (s) */
@@ -39,17 +33,5 @@ td.gridjs-td {
   text-align: center;
 }
 /* grid js css (e) */
-
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
 
 

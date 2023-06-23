@@ -11,9 +11,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { showLoading } from './spinnerSlice';
+import { showLoading } from '../../app/slices/spinnerSlice';
 import Button from '@mui/material/Button';
 import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
+import { FabInfo } from 'features/common/FabInfo';
 
 export function CourtGrid() {
   const [dataDate, setDataDate] = useState<DateState>({});
@@ -156,9 +157,13 @@ export function CourtGrid() {
     }, 500);
   }
 
+  function btnFabInfo() {
+    console.log("test");
+  }
+  
   return (
     <div>
-
+      <FabInfo onClick={btnFabInfo}/>
       <div>
       {
         dateColumn?.map((key, index) => (
@@ -182,7 +187,8 @@ export function CourtGrid() {
                       },
                       {
                         name: '장소',
-                        data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`
+                        data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
+                        sort: true
                       },
                       { 
                         name: '예약',

@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import spinnerReducer from '../features/courtgrid/spinnerSlice';
+import spinnerReducer from './slices/spinnerSlice';
 
 export const store = configureStore({
   reducer: {
