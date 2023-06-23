@@ -56,77 +56,47 @@ export function CourtGrid() {
   function copy(row: any){
     console.log(row);
     const place_cd = row[3].data;
-    const time_no = encodeURIComponent(`${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`);
-    const rent_type = "1001";
+    const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
     const rent_date = row[8].data;
 
-    /* 
-      function copy(row: any){
-        console.log(row);
-        const place_cd = row[3].data;
-        const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
-        const rent_date = row[8].data;
-
-        const scriptString: string = `
-          var data = new URLSearchParams({
-            "action": "write",
-            "comcd": "YCS04",
-            "part_cd": "02",
-            "place_cd": "${place_cd}",
-            "time_no": "${time_no}", 
-            "rent_type": "1001",
-            "rent_date": "${rent_date}"
-          }).toString();
-          $.ajax({
-            type: "POST",
-            url: '/fmcs/4',
-            data: data,
-            success: function(data)
-            {
-              var popup = window.open("", "_blank");
-                popup.document.write(data);
-                setTimeout(()=>{
-                  var popDoc = $(popup.document);
-                  var name = popDoc.find("#mem_nm").val();
-                  popDoc.find("#team_nm").val(name);    
-                  popDoc.find("#team_yn2").prop("checked", true);
-                  popDoc.find("#users").val(4);    
-                  popDoc.find("#purpose").val("건강 증진");    
-                  popDoc.find("#agree_use1").prop("checked", true);
-                  popDoc.scrollTop(popDoc.height());
-                  popup.popup();
-                }, 300);
-                
-            }
-          });
-        `;      
-    
-    */
+    var url = "/fmcs/4?prev_proc=login&" + 
+      new URLSearchParams({
+        "action": "write",
+        "comcd": "YCS04",
+        "part_cd": "02",
+        "place_cd": place_cd,
+        "time_no": time_no, 
+        "rent_type": "1001",
+        "rent_date": rent_date
+      }).toString();
     const scriptString: string = `
-      var url = "/fmcs/4";
-      var arr_elem = {
-          "action": "write",
-          "comcd": "YCS04",
-          "part_cd": "02",
-          "place_cd": "${place_cd}",
-          "time_no": "${time_no}", 
-          "rent_type": "${rent_type}",
-          "rent_date": "${rent_date}"
-      };
-      
-      var form = $('<form id="form_send_post_'+ (new Date()).getTime() +'" method="post" action="" target="_blank" style="position: absolute;width:0;height:0;overflow:hidden;font-size:0;"></form>');
-      form.attr('action', url);
-      $(document.body).append(form);
-      
-      for(key in arr_elem)
-      {
-        var input = $('<input type="hidden" name="" value=""/>');
-        input.attr('name', key);
-        input.val(decodeURIComponent(arr_elem[key]));
-        form.append(input);
-      }
-      
-      form.submit();    
+      var popup = window.open("https://www.ycs.or.kr/fmcs/4", "_blank");    
+      var url = "${url}"
+      setTimeout(()=>{
+        popup.send_post(url);
+        setTimeout(()=>{
+          var popDoc = $(popup.document);
+          var name = popDoc.find("#mem_nm").val();
+          var phone = popDoc.find("#mobile_tel").val();    
+          popDoc.find("#team_nm").val(name);    
+          popDoc.find("#team_yn2").prop("checked", true);
+          popDoc.find("#users").val(4);
+          popDoc.find("#tel").val(phone);
+          popDoc.find("#purpose").val("건강 증진");    
+          popDoc.find("#agree_use1").prop("checked", true);
+          popDoc.scrollTop(popDoc.height());
+          
+          var option = "width = 1265, height = 870, top = 100, left = 200, location = no";
+          var macroWin = window.open("/macro_block?phoneNumber=" + phone, "macro", option);
+          setTimeout(()=>{
+            var macroDoc = $(macroWin.document);
+              setTimeout(()=>{
+                macroDoc.find("#message_inactive").click();
+                macroDoc.find("#phone_number").val(phone.replaceAll("-",""));
+              }, 3000);
+          }, 300);
+        }, 100);
+      }, 300);  
     `;
 
     if (navigator.clipboard && window.isSecureContext) {
@@ -156,78 +126,98 @@ export function CourtGrid() {
       window.open("https://www.ycs.or.kr/fmcs/4", '_blank');
     }, 500);
   }
-
-  function btnFabInfo() {
-    console.log("test");
-  }
   
   return (
-    <div>
-      <FabInfo onClick={btnFabInfo}/>
+    <div id="courtgridDiv">
+      <FabInfo title={"목동 테니스장 이용 안내"}>
+        <li>
+          <b>회원가입 후 인터넷으로 사용 예약</b><br />
+          예약일 기준 다음날부터 일주일 후 사용분까지 예약 가능<br />
+          (1일일 경우, 2~8일)<br />
+          온라인예약 신청: (<a href="https://www.ycs.or.kr" target="_blank" rel='noreferrer'>www.ycs.or.kr/yeyak</a>)
+        </li><br />
+        <li>
+          <b>예약시간 및 예약가능 코트</b><br />
+          가. 양천구 관내 주소자 : 09:00~09:30, 1~10번 코트<br />
+          나. 주소불문 : 09:30 ~ 22:00, <br />1~10번 중 미예약 코트 및 잔여 코트<br />
+          ※ 주소확인 : 관내 우선 예약 회원 신분증 제시 및 주소확인
+        </li>
+      </FabInfo>
       <div>
-      {
-        dateColumn?.map((key, index) => (
+        <h5>{"목동"}</h5>
+      </div>
+      <div>
+        {dateColumn?.map((key, index) => (
           <Accordion key={index}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>{key}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className={styles.gridDiv}>
-                  <Grid
-                    data={dataDate[key]}
-                    columns={[
-                      {
-                        name: '시간',
-                        data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
-                        sort: true
-                      },
-                      {
-                        name: '장소',
-                        data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
-                        sort: true
-                      },
-                      { 
-                        name: '예약',
-                        formatter: (cell: any, row: any) => _(
-                          <Button color="success" size="small" variant="outlined" onClick={()=>{copy(row._cells)}} startIcon={<SportsTennisOutlinedIcon/>} > </Button>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>{key}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={styles.gridDiv}>
+                <Grid
+                  data={dataDate[key]}
+                  columns={[
+                    {
+                      name: "시간",
+                      data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
+                      sort: true,
+                    },
+                    {
+                      name: "장소",
+                      data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
+                      sort: true,
+                    },
+                    {
+                      name: "예약",
+                      formatter: (cell: any, row: any) =>
+                        _(
+                          <Button
+                            color="success"
+                            size="small"
+                            variant="outlined"
+                            onClick={() => {
+                              copy(row._cells);
+                            }}
+                            startIcon={<SportsTennisOutlinedIcon />}
+                          >
+                            {" "}
+                          </Button>
                         ),
-                      },
-                      {
-                        id: 'place_cd',
-                        hidden: true
-                      },
-                      {
-                        id: 'time_no',
-                        hidden: true
-                      },
-                      {
-                        id: 'time_nm',
-                        hidden: true
-                      },
-                      {
-                        id: 'start_time',
-                        hidden: true
-                      },
-                      {
-                        id: 'end_time',
-                        hidden: true
-                      },
-                      {
-                        id: 'date',
-                        hidden: true
-                      },
-                    ]}
-                  >
-                  </Grid>
-                </div>
-              </AccordionDetails>
+                    },
+                    {
+                      id: "place_cd",
+                      hidden: true,
+                    },
+                    {
+                      id: "time_no",
+                      hidden: true,
+                    },
+                    {
+                      id: "time_nm",
+                      hidden: true,
+                    },
+                    {
+                      id: "start_time",
+                      hidden: true,
+                    },
+                    {
+                      id: "end_time",
+                      hidden: true,
+                    },
+                    {
+                      id: "date",
+                      hidden: true,
+                    },
+                  ]}
+                ></Grid>
+              </div>
+            </AccordionDetails>
           </Accordion>
-        ))
-      }
+        ))}
       </div>
     </div>
   );

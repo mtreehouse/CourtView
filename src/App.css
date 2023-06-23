@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   background-color: rgb(255, 255, 255);
-  margin: 50px;
 }
 
 .App-header {
@@ -14,11 +13,17 @@
 }
 
 /* custom */
+#courtgridDiv {
+  margin-top: 50px;
+  max-width: 800px;
+  width: 95%;
+}
+
 #fabInfo {
   position: fixed;
-  margin: 20px;
+  margin: 10px;
   left: 0;
-  top: 20px;
+  top: 10px;
 }
 
 /* grid js css (s) */
@@ -28,10 +33,10 @@ td.gridjs-td {
 .gridjs-tr th:nth-child(3), .gridjs-td:nth-child(3) {
   text-align: center !important;
 }
-.btnCopy {
-  font-size: .9em;
-  text-align: center;
-}
 /* grid js css (e) */
 
-
+/* mui (s) */
+.MuiAccordionDetails-root {
+  padding: 6px !important;
+}
+/* mui (e) */
