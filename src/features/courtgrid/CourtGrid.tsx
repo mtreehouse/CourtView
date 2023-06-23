@@ -56,7 +56,6 @@ export function CourtGrid() {
   }, [dispatch]);
 
   function copy(row: any){
-    console.log(row);
     const place_cd = row[3].data;
     const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
     const rent_date = row[8].data;
@@ -142,8 +141,8 @@ export function CourtGrid() {
   
   return (
     <div id="courtgridDiv">
-      <FabInfo title={"목동 테니스장 예약 안내"}>
-        <b>현재 예약 가능한 모든 코트를 보여줍니다.</b><br/>
+      <FabInfo title={"예약 이용 안내"}>
+        <b>현재 예약 가능한 모든 코트를 보여줍니다.</b><br/><br/>
         <li>
           <b>PC 이용 시</b>
           <p>
@@ -154,7 +153,6 @@ export function CourtGrid() {
             휴대폰 인증 후 예약 진행.<br/>
           </p>
         </li>
-        <br />
         <li>
           <b>모바일 이용 시</b><br />
           <p>알림 창 내용 기억 후 직접 선택하여 예약.</p>

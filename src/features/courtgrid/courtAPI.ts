@@ -18,7 +18,12 @@ export async function getMonthTimeState() {
       */
       await fetch(`${URL_MONTH_TIME}?company_code=YCS04&part_code=02&base_date=${today}&place_code=${index}`)
       .then(r=>r.json()).then(function(stateList) {
-        const openMonthState = stateList.filter((s:PlaceState) => s.use_yn==="N");
+        const openMonthState = stateList.filter((s:PlaceState) => {
+          if(s.use_yn==="N") {
+            if(s.date === today) return s.start_time > DateTime.now().toFormat('HH:mm');
+            return true;
+          } else return false;
+        });
         placeState.push(...openMonthState);
   
       })
