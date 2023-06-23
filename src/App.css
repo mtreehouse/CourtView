@@ -1,3 +1,11 @@
+/* hide scroll */
+*{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
 .App {
   text-align: center;
   background-color: rgb(255, 255, 255);
@@ -14,7 +22,7 @@
 
 /* custom */
 #courtgridDiv {
-  margin-top: 50px;
+  margin: 50px 0px 50px 0px;
   max-width: 800px;
   width: 95%;
 }
@@ -26,12 +34,22 @@
   top: 10px;
 }
 
+#fabRefresh {
+  position: fixed;
+  margin: 10px;
+  left: 0;
+  top: 60px;
+}
+
 /* grid js css (s) */
 td.gridjs-td {
   padding: 3.5px 15px !important;
 }
 .gridjs-tr th:nth-child(3), .gridjs-td:nth-child(3) {
   text-align: center !important;
+}
+.MuiAccordion-root {
+  background-color: rgb(247, 250, 255) !important;
 }
 /* grid js css (e) */
 
@@ -40,3 +58,4 @@ td.gridjs-td {
   padding: 6px !important;
 }
 /* mui (e) */
+

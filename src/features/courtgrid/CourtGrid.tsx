@@ -14,7 +14,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { showLoading } from '../../app/slices/spinnerSlice';
 import Button from '@mui/material/Button';
 import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
+import { Fab } from '@mui/material';
 import { FabInfo } from 'features/common/FabInfo';
+import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 
 export function CourtGrid() {
   const [dataDate, setDataDate] = useState<DateState>({});
@@ -59,6 +61,17 @@ export function CourtGrid() {
     const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
     const rent_date = row[8].data;
 
+    function isMobile() {return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
+
+    if(isMobile()) {
+      alert(`
+        날짜 : ${rent_date}
+        시간 : ${row[0].data}
+        장소 : ${row[1].data}
+        위 내용으로 예약하십시오.
+      `);
+    }
+    
     var url = "/fmcs/4?prev_proc=login&" + 
       new URLSearchParams({
         "action": "write",
@@ -129,20 +142,27 @@ export function CourtGrid() {
   
   return (
     <div id="courtgridDiv">
-      <FabInfo title={"목동 테니스장 이용 안내"}>
+      <FabInfo title={"목동 테니스장 예약 안내"}>
+        <b>현재 예약 가능한 모든 코트를 보여줍니다.</b><br/>
         <li>
-          <b>회원가입 후 인터넷으로 사용 예약</b><br />
-          예약일 기준 다음날부터 일주일 후 사용분까지 예약 가능<br />
-          (1일일 경우, 2~8일)<br />
-          온라인예약 신청: (<a href="https://www.ycs.or.kr" target="_blank" rel='noreferrer'>www.ycs.or.kr/yeyak</a>)
-        </li><br />
+          <b>PC 이용 시</b>
+          <p>
+            예약 버튼 클릭 후 열리는 새 창에서<br/>
+            로그인 후 <b>키보드 F12</b>를 누른 후에<br/>
+            <b>Console 창</b>에 <b>CTRL + V</b> 누른 후 <b>Enter</b>.<br/>
+            <sup>(자동 복사된 스크립트 실행)</sup><br/>
+            휴대폰 인증 후 예약 진행.<br/>
+          </p>
+        </li>
+        <br />
         <li>
-          <b>예약시간 및 예약가능 코트</b><br />
-          가. 양천구 관내 주소자 : 09:00~09:30, 1~10번 코트<br />
-          나. 주소불문 : 09:30 ~ 22:00, <br />1~10번 중 미예약 코트 및 잔여 코트<br />
-          ※ 주소확인 : 관내 우선 예약 회원 신분증 제시 및 주소확인
+          <b>모바일 이용 시</b><br />
+          <p>알림 창 내용 기억 후 직접 선택하여 예약.</p>
         </li>
       </FabInfo>
+      <Fab onClick={()=>{window.location.reload();}} color="success" size="small" aria-label="add" id='fabRefresh'>
+          <RestartAltOutlinedIcon/>
+      </Fab> 
       <div>
         <h5>{"목동"}</h5>
       </div>

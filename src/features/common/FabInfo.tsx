@@ -1,6 +1,6 @@
-import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
-import { Fab } from '@mui/material';
 import * as React from 'react';
+import { Fab } from '@mui/material';
+import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,7 +25,7 @@ export function FabInfo({title, children}: FabInfoProps) {
 
     return (
         <div>
-            <Fab onClick={handleOpen} color="primary" size="small" aria-label="add" id='fabInfo'>
+            <Fab onClick={handleOpen} color="inherit" size="small" aria-label="add" id='fabInfo'>
                 <QuestionMarkOutlinedIcon/>
             </Fab>
             <Dialog
