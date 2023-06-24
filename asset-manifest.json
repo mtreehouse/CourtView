@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/CourtView/static/css/main.b9e1edd5.css",
+    "main.js": "/CourtView/static/js/main.655c94bd.js",
+    "static/js/27.06ed275e.chunk.js": "/CourtView/static/js/27.06ed275e.chunk.js",
+    "static/media/courtback.jpg": "/CourtView/static/media/courtback.8c9eeff1640adfca94d0.jpg",
+    "index.html": "/CourtView/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.b9e1edd5.css",
+    "static/js/main.655c94bd.js"
+  ]
+}
