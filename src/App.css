@@ -6,9 +6,12 @@
   display: none;
 }
 
+body {
+  background-image: url(../public/image/courtback.jpg);
+}
+
 .App {
   text-align: center;
-  background-color: rgb(255, 255, 255);
 }
 
 .App-header {

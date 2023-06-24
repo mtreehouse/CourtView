@@ -146,7 +146,7 @@ export function CourtGrid() {
         <li>
           <b>PC 이용 시</b>
           <p>
-            예약 버튼 클릭 후 열리는 새 창에서<br/>
+            <b>예약 버튼</b> 클릭 후 열리는 새 창에서<br/>
             로그인 후 <b>키보드 F12</b>를 누른 후에<br/>
             <b>Console 창</b>에 <b>CTRL + V</b> 누른 후 <b>Enter</b>.<br/>
             <sup>(자동 복사된 스크립트 실행)</sup><br/>
@@ -162,7 +162,7 @@ export function CourtGrid() {
           <RestartAltOutlinedIcon/>
       </Fab> 
       <div>
-        <h5>{"목동"}</h5>
+        <h5>{"Mok-dong Court"}</h5>
       </div>
       <div>
         {dateColumn?.map((key, index) => (
