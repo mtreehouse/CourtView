@@ -25,6 +25,10 @@ body {
 }
 
 /* custom */
+#courtViewLogo {
+  width: 15svh;
+}
+
 #courtgridDiv {
   margin: 50px 0px 50px 0px;
   max-width: 800px;

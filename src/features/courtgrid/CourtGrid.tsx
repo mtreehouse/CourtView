@@ -162,7 +162,8 @@ export function CourtGrid() {
           <RestartAltOutlinedIcon/>
       </Fab> 
       <div>
-        <h5>{"Mok-dong Court"}</h5>
+        <img id='courtViewLogo' src={process.env.PUBLIC_URL + "/image/courtview.png"} />
+        <h4>{"Mok-dong Court"}</h4>
       </div>
       <div>
         {dateColumn?.map((key, index) => (
