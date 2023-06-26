@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/CourtView/static/css/main.dfb9c1fe.css",
-    "main.js": "/CourtView/static/js/main.da214066.js",
+    "main.js": "/CourtView/static/js/main.144c86e9.js",
     "static/js/27.06ed275e.chunk.js": "/CourtView/static/js/27.06ed275e.chunk.js",
     "static/media/courtback.jpg": "/CourtView/static/media/courtback.8c9eeff1640adfca94d0.jpg",
     "index.html": "/CourtView/index.html"
   },
   "entrypoints": [
     "static/css/main.dfb9c1fe.css",
-    "static/js/main.da214066.js"
+    "static/js/main.144c86e9.js"
   ]
 }
