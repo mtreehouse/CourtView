@@ -8,6 +8,7 @@
 
 body {
   background-image: url(../public/image/courtback.jpg);
+  background-size: 300lvh
 }
 
 .App {
