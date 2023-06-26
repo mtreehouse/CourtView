@@ -24,6 +24,7 @@ export function CourtGrid() {
   const dispatch = useDispatch();
 
   useEffect(()=>{
+    console.log("ENV : " + process.env.NODE_ENV);
     const getPlaceState = async () => {
       dispatch(showLoading(true));
       const placeState: PlaceState[] = await getMonthTimeState();
