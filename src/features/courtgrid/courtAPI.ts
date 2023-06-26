@@ -1,4 +1,4 @@
-import {URL_MONTH_TIME} from 'const'
+import {URL_YCS, URL_MONTH_TIME} from 'const'
 import {DateTime} from 'ts-luxon'
 import {PlaceState} from 'models'
 
@@ -16,7 +16,9 @@ export async function getMonthTimeState() {
         rent_type: 1001
         mem_no: 00234246
       */
-      await fetch(`${URL_MONTH_TIME}?company_code=YCS04&part_code=02&base_date=${today}&place_code=${index}`)
+      await fetch(`${URL_YCS}${URL_MONTH_TIME}?company_code=YCS04&part_code=02&base_date=${today}&place_code=${index}`, {
+        mode: "no-cors"
+      })
       .then(r=>r.json()).then(function(stateList) {
         const openMonthState = stateList.filter((s:PlaceState) => {
           if(s.use_yn==="N") {
