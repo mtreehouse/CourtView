@@ -31,7 +31,7 @@ export function CourtGrid() {
 
       placeState.forEach((e: PlaceState) => {
         const weekday = DateTime.fromISO(e.date, {locale:"kr"}).toFormat("EEE");
-        const dateweek = `${e.date} (${weekday})`;
+        const dateweek = `${DateTime.fromISO(e.date).toFormat('yyyy-MM-dd')} (${weekday})`;
         dateState[dateweek] ? dateState[dateweek].push(e) : dateState[dateweek] = [e];
 
       });
@@ -141,7 +141,7 @@ export function CourtGrid() {
   
   return (
     <div id="courtgridDiv">
-      <FabInfo title={"예약 이용 안내"}>
+      <FabInfo title={"CourtView 이용 안내"}>
         <b>현재 예약 가능한 모든 코트를 보여줍니다.</b><br/><br/>
         <li>
           <b>PC 이용 시</b>
