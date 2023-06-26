@@ -18,6 +18,7 @@ function App() {
       <header className="App-header">
         <CourtGrid />
       </header>
+      <p id='copyright'>Copyright 2023. CourtView all rights reserved.</p>
     </div>
   );
 }

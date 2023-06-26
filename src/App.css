@@ -29,6 +29,12 @@ body {
   width: 15svh;
 }
 
+#copyright {
+  color: rgb(213, 213, 213);
+  font-size: 0.8em;
+  margin-top: 100px;
+}
+
 #courtgridDiv {
   margin: 50px 0px 50px 0px;
   max-width: 800px;
