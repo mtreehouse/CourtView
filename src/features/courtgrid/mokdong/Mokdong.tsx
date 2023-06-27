@@ -11,7 +11,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { showLoading } from '../../app/slices/spinnerSlice';
+import { showLoading } from '../../../app/slices/spinnerSlice';
 import Button from '@mui/material/Button';
 import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
 import { Fab } from '@mui/material';
