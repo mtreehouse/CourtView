@@ -14,11 +14,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { showLoading } from '../../../app/slices/spinnerSlice';
 import Button from '@mui/material/Button';
 import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
-import { Fab } from '@mui/material';
-import { FabInfo } from 'features/common/FabInfo';
-import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 
-export function CourtGrid() {
+export function Mokdong() {
   const [dataDate, setDataDate] = useState<DateState>({});
   const [dateColumn, setDateColumn] = useState<Array<string>>();
   const dispatch = useDispatch();
@@ -141,104 +138,77 @@ export function CourtGrid() {
   }
   
   return (
-    <div id="courtgridDiv">
-      <FabInfo title={"CourtView 이용 안내"}>
-        <b>현재 예약 가능한 모든 코트를 보여줍니다.</b><br/><br/>
-        <li>
-          <b>PC 이용 시</b>
-          <div>
-            <b>예약 버튼</b> 클릭 후 열리는 새 창에서<br/>
-            로그인 후 <b>키보드 F12</b>를 누른 후에<br/>
-            <b>Console 창</b>에 <b>CTRL + V</b> 누른 후 <b>Enter</b>.<br/>
-            <sup>(자동 복사된 스크립트 실행)</sup><br/>
-            휴대폰 인증 후 예약 진행.<br/>
+    <div>
+    {dateColumn?.map((key, index) => (
+      <Accordion key={index}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>{key}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <div className={styles.gridDiv}>
+            <Grid
+              data={dataDate[key]}
+              columns={[
+                {
+                  name: "시간",
+                  data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
+                  sort: true,
+                },
+                {
+                  name: "장소",
+                  data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
+                  sort: true,
+                },
+                {
+                  name: "예약",
+                  formatter: (cell: any, row: any) =>
+                    _(
+                      <Button
+                        color="success"
+                        size="small"
+                        variant="outlined"
+                        onClick={() => {
+                          copy(row._cells);
+                        }}
+                        startIcon={<SportsTennisOutlinedIcon />}
+                      >
+                        {" "}
+                      </Button>
+                    ),
+                },
+                {
+                  id: "place_cd",
+                  hidden: true,
+                },
+                {
+                  id: "time_no",
+                  hidden: true,
+                },
+                {
+                  id: "time_nm",
+                  hidden: true,
+                },
+                {
+                  id: "start_time",
+                  hidden: true,
+                },
+                {
+                  id: "end_time",
+                  hidden: true,
+                },
+                {
+                  id: "date",
+                  hidden: true,
+                },
+              ]}
+            ></Grid>
           </div>
-        </li><br/>
-        <li>
-          <b>모바일 이용 시</b><br />
-          <div>알림 창 내용 기억 후 직접 선택하여 예약.</div>
-        </li>
-      </FabInfo>
-      <Fab onClick={()=>{window.location.reload();}} color="success" size="small" aria-label="add" id='fabRefresh'>
-          <RestartAltOutlinedIcon/>
-      </Fab> 
-      <div>
-        <img id='courtViewLogo' alt='courtView Logo' src={process.env.PUBLIC_URL + "/image/courtview.png"} />
-        <h4>{"Mok-dong Court"}</h4>
-      </div>
-      <div>
-        {dateColumn?.map((key, index) => (
-          <Accordion key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>{key}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className={styles.gridDiv}>
-                <Grid
-                  data={dataDate[key]}
-                  columns={[
-                    {
-                      name: "시간",
-                      data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
-                      sort: true,
-                    },
-                    {
-                      name: "장소",
-                      data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
-                      sort: true,
-                    },
-                    {
-                      name: "예약",
-                      formatter: (cell: any, row: any) =>
-                        _(
-                          <Button
-                            color="success"
-                            size="small"
-                            variant="outlined"
-                            onClick={() => {
-                              copy(row._cells);
-                            }}
-                            startIcon={<SportsTennisOutlinedIcon />}
-                          >
-                            {" "}
-                          </Button>
-                        ),
-                    },
-                    {
-                      id: "place_cd",
-                      hidden: true,
-                    },
-                    {
-                      id: "time_no",
-                      hidden: true,
-                    },
-                    {
-                      id: "time_nm",
-                      hidden: true,
-                    },
-                    {
-                      id: "start_time",
-                      hidden: true,
-                    },
-                    {
-                      id: "end_time",
-                      hidden: true,
-                    },
-                    {
-                      id: "date",
-                      hidden: true,
-                    },
-                  ]}
-                ></Grid>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </div>
-    </div>
-  );
+        </AccordionDetails>
+      </Accordion>
+    ))}
+  </div>  );
 }
