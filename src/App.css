@@ -55,6 +55,18 @@ body {
   top: 60px;
 }
 
+.t-r {
+  text-align: right;
+}
+
+.t-l {
+  text-align: left;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 /* grid js css (s) */
 td.gridjs-td {
   padding: 3.5px 15px !important;

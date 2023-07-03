@@ -14,12 +14,40 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { showLoading } from '../../../app/slices/spinnerSlice';
 import Button from '@mui/material/Button';
 import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
+import {EXPAND_BTN_TXT} from 'const'
 
 export function Mokdong() {
   const [dataDate, setDataDate] = useState<DateState>({});
   const [dateColumn, setDateColumn] = useState<Array<string>>();
+  const [expanded, setExpanded] = useState(false);
+  const [expandedAccordions, setExpandedAccordions] = useState(Array<number>);
+
   const dispatch = useDispatch();
 
+  function accordionOnclick(index: number) {
+    if (expandedAccordions.includes(index))
+      setExpandedAccordions(
+        expandedAccordions.filter((number) => number !== index)
+      );
+    else setExpandedAccordions([...expandedAccordions, index]);
+  }
+
+  function collapseAll() {
+    setExpandedAccordions([]);
+  }
+  
+  function expandAll() {
+    const newArray = new Array<number>();
+    dateColumn?.forEach((d, index) => newArray.push(index));
+    setExpandedAccordions(newArray);
+  }
+
+  function expandOnclick(isExpanded: Boolean) {
+    setExpanded(!isExpanded);
+    if(isExpanded) collapseAll();
+    else expandAll();
+  }
+  
   useEffect(()=>{
     const getPlaceState = async () => {
       dispatch(showLoading(true));
@@ -51,7 +79,7 @@ export function Mokdong() {
     getPlaceState();
 
   }, [dispatch]);
-
+  
   function copy(row: any){
     const place_cd = row[3].data;
     const time_no = `${row[4].data};${row[5].data};${row[6].data.replace(':', '')};${row[7].data.replace(':', '')};1`;
@@ -138,76 +166,83 @@ export function Mokdong() {
   
   return (
     <div>
-    {dateColumn?.map((key, index) => (
-      <Accordion key={index}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>{key}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div className={styles.gridDiv}>
-            <Grid
-              data={dataDate[key]}
-              columns={[
-                {
-                  name: "시간",
-                  data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
-                  sort: true,
-                },
-                {
-                  name: "장소",
-                  data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
-                  sort: true,
-                },
-                {
-                  name: "예약",
-                  formatter: (cell: any, row: any) =>
-                    _(
-                      <Button
-                        color="success"
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                          copy(row._cells);
-                        }}
-                        startIcon={<SportsTennisOutlinedIcon />}
-                      >
-                        {" "}
-                      </Button>
-                    ),
-                },
-                {
-                  id: "place_cd",
-                  hidden: true,
-                },
-                {
-                  id: "time_no",
-                  hidden: true,
-                },
-                {
-                  id: "time_nm",
-                  hidden: true,
-                },
-                {
-                  id: "start_time",
-                  hidden: true,
-                },
-                {
-                  id: "end_time",
-                  hidden: true,
-                },
-                {
-                  id: "date",
-                  hidden: true,
-                },
-              ]}
-            ></Grid>
-          </div>
-        </AccordionDetails>
-      </Accordion>
-    ))}
+      <div className='t-r w-100'>
+        <Button onClick={()=>{}}>시간 내림차순</Button>
+        <Button onClick={(e)=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
+      </div>
+      {dateColumn?.map((key, index) => (
+        <Accordion 
+          onChange={() => accordionOnclick(index)}
+          expanded={expandedAccordions.includes(index)}
+          key={index}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>{key}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className={styles.gridDiv}>
+              <Grid
+                data={dataDate[key]}
+                columns={[
+                  {
+                    name: "시간",
+                    data: (row: any) => `${row.start_time} ~ ${row.end_time}`,
+                    sort: true,
+                  },
+                  {
+                    name: "장소",
+                    data: (row: any) => `코트-${row.place_cd.padStart(2, 0)}`,
+                    sort: true,
+                  },
+                  {
+                    name: "예약",
+                    formatter: (cell: any, row: any) =>{
+                      _(
+                        <Button
+                          color="success"
+                          size="small"
+                          variant="outlined"
+                          onClick={() => {
+                            copy(row._cells);
+                          }}
+                          startIcon={<SportsTennisOutlinedIcon />}
+                        >
+                          {" "}
+                        </Button>
+                      )},
+                  },
+                  {
+                    id: "place_cd",
+                    hidden: true,
+                  },
+                  {
+                    id: "time_no",
+                    hidden: true,
+                  },
+                  {
+                    id: "time_nm",
+                    hidden: true,
+                  },
+                  {
+                    id: "start_time",
+                    hidden: true,
+                  },
+                  {
+                    id: "end_time",
+                    hidden: true,
+                  },
+                  {
+                    id: "date",
+                    hidden: true,
+                  },
+                ]}
+              ></Grid>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      ))}
   </div>  );
 }
