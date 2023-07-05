@@ -169,13 +169,6 @@ export function Mokdong() {
   
   return (
     <div>
-          <Button
-            color="success"
-            size="small"
-            variant="outlined"
-            startIcon={<SportsTennisOutlinedIcon />}
-            style={{display:'none'}}
-          />
       <div className='t-r w-100'>
         <Button onClick={()=>{setSortTimeDesc(!sortTimeDesc)}}>{sortTimeDesc ? '시간▼' : '시간▲'}</Button>
         <Button onClick={()=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
@@ -249,5 +242,6 @@ export function Mokdong() {
           </AccordionDetails>
         </Accordion>
       ))}
+      <Button value="gridJS버튼style용hidden" color="success" size="small" variant="outlined" startIcon={<SportsTennisOutlinedIcon />} style={{display:'none'}} />
   </div>  );
 }
