@@ -20,6 +20,7 @@ import {EXPAND_BTN_TXT} from 'const'
 export function Mokdong() {
   const [dataDate, setDataDate] = useState<DateState>({});
   const [dateColumn, setDateColumn] = useState<Array<string>>();
+  const [sortTimeDesc, setSortTimeDesc] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordions, setExpandedAccordions] = useState(Array<number>);
 
@@ -64,9 +65,10 @@ export function Mokdong() {
 
       const dateOrderState: any = {};
         Object.keys(dateState).sort().forEach((key: any)=>{
-          dateState[key].sort((a: any, b: any) => (
-            a.start_time > b.start_time ? 1 : -1
-          ));
+          dateState[key].sort((a: any, b: any) => {
+            if(sortTimeDesc) return a.start_time < b.start_time ? 1 : -1
+            else return a.start_time > b.start_time ? 1 : -1
+          });
           dateOrderState[key] = dateState[key];
 
       });
@@ -79,7 +81,7 @@ export function Mokdong() {
 
     getPlaceState();
 
-  }, [dispatch]);
+  }, [dispatch, sortTimeDesc]);
   
   function copy(row: any){
     const place_cd = row[3].data;
@@ -175,8 +177,8 @@ export function Mokdong() {
             style={{display:'none'}}
           />
       <div className='t-r w-100'>
-        <Button onClick={()=>{}}>시간 내림차순</Button>
-        <Button onClick={(e)=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
+        <Button onClick={()=>{setSortTimeDesc(!sortTimeDesc)}}>{sortTimeDesc ? '시간▼' : '시간▲'}</Button>
+        <Button onClick={()=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
       </div>
       {dateColumn?.map((key, index) => (
         <Accordion 

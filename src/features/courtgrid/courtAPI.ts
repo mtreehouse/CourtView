@@ -1,4 +1,4 @@
-import {URL_YCS, URL_MONTH_TIME} from 'const'
+import {URL_MONTH_TIME} from 'const'
 import {DateTime} from 'ts-luxon'
 import {PlaceState} from 'models'
 
