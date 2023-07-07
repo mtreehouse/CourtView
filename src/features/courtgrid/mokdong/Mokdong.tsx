@@ -173,7 +173,7 @@ export function Mokdong() {
           const column: NodeListOf<HTMLElement> = document.querySelectorAll('[data-column-id="시간"] > button') as NodeListOf<HTMLElement>;
           column.forEach(element => element.click());
           setSortTimeDesc(!sortTimeDesc);
-          //TODO - prevent re-rendering
+          //TODO - prevent re-rendering useMemo처리
         }}>{sortTimeDesc ? '시간▲' : '시간▼'}</Button>
         <Button onClick={()=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
       </div>
