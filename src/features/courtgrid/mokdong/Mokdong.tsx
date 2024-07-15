@@ -18,8 +18,8 @@ import SportsTennisOutlinedIcon from '@mui/icons-material/SportsTennisOutlined';
 import {EXPAND_BTN_TXT} from 'const'
 
 export function Mokdong() {
-  const [dataDate, setDataDate] = useState<DateState>({});
-  const [dateColumn, setDateColumn] = useState<Array<string>>();
+  const [courtData, setCourtData] = useState<DateState>({});
+  const [dateList, setDateList] = useState<Array<string>>();
   const [sortTimeDesc, setSortTimeDesc] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordions, setExpandedAccordions] = useState(Array<number>);
@@ -40,7 +40,7 @@ export function Mokdong() {
   
   function expandAll() {
     const newArray = new Array<number>();
-    dateColumn?.forEach((d, index) => newArray.push(index));
+    dateList?.forEach((d, index) => newArray.push(index));
     setExpandedAccordions(newArray);
   }
 
@@ -72,8 +72,8 @@ export function Mokdong() {
 
       });
 
-      setDataDate(dateOrderState);
-      setDateColumn(Object.keys(dateOrderState));
+      setCourtData(dateOrderState);
+      setDateList(Object.keys(dateOrderState));
       dispatch(showLoading(false));
       
     };
@@ -177,8 +177,9 @@ export function Mokdong() {
         }}>{sortTimeDesc ? '시간▲' : '시간▼'}</Button>
         <Button onClick={()=>{expandOnclick(expanded);}}>{expanded ? EXPAND_BTN_TXT.COLLAPESE : EXPAND_BTN_TXT.EXPAND}</Button>
       </div>
-      {dateColumn?.map((key, index) => (
-        <Accordion 
+      {dateList?.map((key, index) => (
+        <Accordion
+          TransitionProps={{ unmountOnExit: true }}
           onChange={() => accordionOnclick(index)}
           expanded={expandedAccordions.includes(index)}
           key={index}>
@@ -192,7 +193,7 @@ export function Mokdong() {
           <AccordionDetails>
             <div className={styles.gridDiv}>
               <Grid
-                data={dataDate[key]}
+                data={courtData[key]}
                 columns={[
                   {
                     name: "시간",
